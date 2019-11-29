@@ -4,7 +4,7 @@
 
 ## How to use it
 
-Copy the file `post-commit` into the directory `.git/hooks/` of your git project and make it executable.
+Copy the file `post-commit` into the directory `.git/hooks/` of your git project, make it executable, and update the link in the format in Line 9 of the post-commit file to point to the github repo you are using this script on.
 
 ```bash
 chmod +x post-commit
@@ -69,3 +69,7 @@ You should realy consider if this is the right way to keep a changelog for your 
 > Because log diffs are full of noise — by nature. They could not make a suitable change log even in a hypothetical project run by perfect humans who never make typos, never forget to commit new files, never miss any part of a refactoring. The purpose of a commit is to document one atomic step in the process by which the code evolves from one state to another. The purpose of a change log is to document the noteworthy differences between these states.
 
 > As is the difference between good comments and the code itself, so is the difference between a change log and the commit log: one describes the why, the other the how.
+
+### Known bug in Joe Murray's format
+
+> The most recent commit link in the CHANGELOG.md is incorrect as the commit is amended after the CHANGELOG.md is generated, causing the hash to be for an outdated version of the commit.
