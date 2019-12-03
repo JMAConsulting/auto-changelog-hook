@@ -13,15 +13,19 @@ cp post-commit ${YOUR_GIT_PROJECT_PATH}/.git/hooks
 
 ### Side Note
 
-This hook is only triggered locally, so if you use this with your team, everybody has to store the hook inside his or her local copy, since the `.git` directory is not pushed or tracked with the files from your repository. 
+This hook is only triggered locally, so if you use this with your team, everybody has to store the hook inside his or her local copy, since the `.git` directory is not pushed or tracked with the files from your repository.
 
-To learn more about the `.git` folder and what it really contains, I suggest you [the brief explanation of the various files and directories inside the `.git` directory](http://www.gitguys.com/topics/the-git-directory/). 
+To learn more about the `.git` folder and what it really contains, I suggest you [the brief explanation of the various files and directories inside the `.git` directory](http://www.gitguys.com/topics/the-git-directory/).
 
 ## Customization
 
-### Generated file name 
+### Generated file name
 
 You can change the name of the generated CHANGELOG file inside the `post-commit` file by modifying the variable `OUTPUT_FILE` to whatever you want. Some projects also use `HISTORY.md`, `NEWS.md` or `RELEASE.md`, but I suggest you stick to the convention.
+
+### Git repository
+
+You need to provide the url of the git repository by setting the value of variable `REPO_URL`.
 
 ### Output format
 
@@ -35,7 +39,7 @@ You can test your output format by executing the following command inside your g
 git --no-pager log --no-merges --format="YOUR_FORMAT_GOES_HERE"
 ```
 
-If you are happy with the result, just replace the command in the `post-commit` file with your command. 
+If you are happy with the result, just replace the command in the `post-commit` file with your command.
 Don't forget to pipe the output in you're CHANGELOG with ` > $OUTPUT_FILE` at the end of the line.
 
 ## How it works
@@ -44,7 +48,7 @@ The script uses [Git Hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-H
 
 Since we want to add the changes in our `CHANGELOG.md` as well, we have to use [Git's `--amend` feature](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) to change the previous commit and apply the changes from the script, too.
 
-By changing the last commit, we are triggering the `post-commit` hook another time, since the `--ammend` commit is a commit as well. To prevent an infite execution of this hook, we have to check, whether our generated `CHANGELOG.md` have have changed at all. If it is executed the second time, the file should not be different. 
+By changing the last commit, we are triggering the `post-commit` hook another time, since the `--ammend` commit is a commit as well. To prevent an infite execution of this hook, we have to check, whether our generated `CHANGELOG.md` has changed. The second time the hook is called, the file should not be different.
 
 We can check this by using the [`git status` command with `--porcelain`](http://git-scm.com/docs/git-status) and parse the output for our `$OUTPUT_FILE`. If the process returns a code higher than zero, we had a match and know  that we have a changed `CHANGELOG.md`, which we have to append to our previous commit.
 
